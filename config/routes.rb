@@ -1,11 +1,13 @@
 SampleApp::Application.routes.draw do |map|
-#  get "users/new"
   resources :users
+  resources :sessions, :only => [ :new, :create, :destroy ]
 
-  match "/signup"  => "users#new"
-  match "/contact" => "pages#contact"
-  match "/about"   => "pages#about"
-  match "/help"    => "pages#help"
+  match '/signup'  => 'users#new'
+  match '/signin'  => 'sessions#new'
+  match '/signout' => 'sessions#destroy'
+  match '/contact' => 'pages#contact'
+  match '/about'   => 'pages#about'
+  match '/help'    => 'pages#help'
   
 
   # The priority is based upon order of creation:
@@ -58,7 +60,7 @@ SampleApp::Application.routes.draw do |map|
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   # root :to => "welcome#index"
-  root :to => "pages#home"
+  root :to => 'pages#home'
 
   # See how all your routes lay out with "rake routes"
 
