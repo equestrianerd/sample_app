@@ -63,6 +63,12 @@ describe UsersController do
       get :new
       response.should have_selector('title', :content => 'Sign up')
     end
+    
+    it "should redirect if signed in" do
+      test_sign_in(Factory(:user))
+      get :new
+      response.should redirect_to(root_path)
+    end
   end
   
   describe "GET 'show'" do
@@ -141,6 +147,12 @@ describe UsersController do
       it "should render the 'new' page" do
         post :create, :user => @attr
         response.should render_template('new')
+      end
+    
+      it "should redirect if signed in" do
+        test_sign_in(Factory(:user))
+        post :create, :user => @attr
+        response.should redirect_to(root_path)
       end
     end
     
@@ -278,8 +290,8 @@ describe UsersController do
     
     describe "as an admin user" do
       before(:each) do
-        admin = Factory(:user, :email => "admin@example.com", :admin => true)
-        test_sign_in(admin)
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
       end
       
       it "should destroy the user" do
@@ -291,6 +303,16 @@ describe UsersController do
       it "should redirect to the users page" do
         delete :destroy, :id => @user
         response.should redirect_to(users_path)
+      end
+      
+      it "should not be able to delete themselves" do
+        delete :destroy, :id => @admin
+        response.should redirect_to(users_path)
+      end
+      
+      it "should get a flash error when delete themselves" do
+        delete :destroy, :id => @admin
+        flash[:error].should =~ /cannot delete yourself/
       end
     end
   end
