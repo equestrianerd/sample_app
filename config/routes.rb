@@ -1,6 +1,11 @@
 SampleApp::Application.routes.draw do |map|
+  get "microposts/create"
+
+  get "microposts/destroy"
+
   resources :users
-  resources :sessions, :only => [ :new, :create, :destroy ]
+  resources :sessions,   :only => [ :new, :create, :destroy ]
+  resources :microposts, :only => [ :create, :destroy ]
 
   match '/signup'  => 'users#new'
   match '/signin'  => 'sessions#new'
