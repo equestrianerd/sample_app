@@ -1,9 +1,11 @@
-SampleApp::Application.routes.draw do |map|
+SampleApp::Application.routes.draw do
   get "microposts/create"
 
   get "microposts/destroy"
 
-  resources :users
+  resources :users do
+    resources :microposts, :only => :index, :as => 'user_microposts'
+  end
   resources :sessions,   :only => [ :new, :create, :destroy ]
   resources :microposts, :only => [ :create, :destroy ]
 

@@ -15,6 +15,21 @@ describe MicropostsController do
     end
   end
   
+  describe "GET 'index'" do
+    before(:each) do
+      @user = Factory(:user)
+      test_sign_in(@user)
+      @micropost = Factory(:micropost, :user => @user)
+    end
+    
+#    todo: get this test/named route to work
+#    it "should list the user's name and micropost count" do
+#      visit user_microposts_path(@user)
+#      visit "/users/#{@user.id}/microposts"
+#      response.should render_template('microposts/index')
+#    end
+  end
+  
   describe "POST 'create'" do
     before(:each) do
       @user = test_sign_in(Factory(:user))
